@@ -56,19 +56,19 @@ export default function Dashboard({ onLogout }) {
             className={tab === "grievances" ? "active" : ""}
             onClick={() => setTab("grievances")}
           >
-             Grievances
+            📄 Grievances
           </button>
           <button
             className={tab === "submit" ? "active" : ""}
             onClick={() => setTab("submit")}
           >
-             Submit
+            ❗ Submit
           </button>
           <button
             className={tab === "feedback" ? "active" : ""}
             onClick={() => setTab("feedback")}
           >
-             Feedback
+            💬 Feedback
           </button>
         </div>
 
