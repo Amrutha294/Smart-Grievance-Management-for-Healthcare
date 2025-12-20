@@ -148,14 +148,13 @@ body {
 
 .feature-icon {
   display: inline-flex;
-  width:32px;
-  height:32px;
+  width: 32px;
+  height: 32px;
   border-radius: 999px;
   align-items: center;
   justify-content: center;
   background: #eff6ff;
 }
-
 
 /* ---------- Auth Page ---------- */
 .auth-page {
@@ -163,9 +162,22 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #e5f0ff;
+
+  background-image: url("./assets/hospital.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   position: relative;
 }
+.auth-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+
 
 .back-home {
   position: absolute;
@@ -179,13 +191,24 @@ body {
 }
 
 .auth-card {
+  position: relative;
+  z-index: 1;
+
   width: 360px;
-  background: white;
   padding: 26px 24px 30px;
   border-radius: 20px;
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.22);
+
+  /* 🔥 opacity effect */
+  background: rgba(255, 255, 255, 0.15);
+
+  /* 🔥 glassmorphism */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
   text-align: center;
 }
+
 
 .auth-logo-container {
   margin-bottom: 8px;
@@ -215,10 +238,16 @@ body {
 
 .auth-tabs {
   display: flex;
-  background: #e5e7eb;
-  border-radius: 999px;
-  padding: 4px;
+  padding: 6px;
   margin-bottom: 18px;
+  border-radius: 999px;
+
+  /* 🔥 Glass opacity background */
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
 }
 
 .auth-tabs button {
@@ -228,13 +257,18 @@ body {
   padding: 8px 0;
   background: transparent;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
+  transition: all 0.25s ease-in-out;
 }
 
+
 .auth-tabs .active {
-  background: white;
-  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.16);
-  font-weight: 500;
+  background: rgba(65, 61, 61, 0.055);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+  font-weight: 600;
 }
 
 .auth-form {
@@ -253,7 +287,7 @@ body {
 .auth-form select {
   width: 100%;
   border-radius: 10px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid hsla(212, 11%, 73%, 0.884);
   padding: 10px;
   font-size: 13px;
   margin-bottom: 10px;
@@ -384,6 +418,7 @@ body {
   font-size: 14px;
   color: #6b7280;
 }
+
 .app-logo {
   width: 34px;
   height: 34px;
@@ -397,4 +432,288 @@ body {
 .dash-header .app-logo {
   width: 30px;
   height: 30px;
+}
+.timeline {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.step {
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  background: #d1d5db;
+  color: #374151;
+}
+
+.step.active {
+  background: #2563eb;
+  color: white;
+  font-weight: bold;
+}
+
+.line {
+  width: 35px;
+  height: 3px;
+  background: #9ca3af;
+  margin: 0 5px;
+}
+.form-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.form-sub {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.form-card {
+  background: #ffffff;
+  padding: 26px;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.styled-form label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 10px;
+  display: block;
+}
+
+.styled-form input,
+.styled-form textarea,
+.styled-form select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 14px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  font-size: 14px;
+}
+
+.submit-btn {
+  margin-top: 10px;
+  font-size: 16px;
+  padding: 12px;
+}
+.form-card {
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
+  width: 90%;               /* 🔥 Wider form */
+  max-width: 900px;         /* 🔥 Increased max width */
+  margin: 0 auto;           /* Center alignment */
+}
+.toast-success {
+  background: #10b981;
+  color: white;
+  padding: 10px 18px;
+  position: fixed;
+  top: 75px;
+  right: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 16px rgba(0,0,0,0.2);
+  animation: fadeIn .3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.highlight-new {
+  background: #e0f7ff;
+  border-left: 5px solid #2196f3;
+  padding-left: 10px;
+  transition: background .8s ease;
+}
+/* 
+.action-bar {
+  display: flex;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-secondary {
+  background: #10b981;
+  color: white;
+}
+
+.grievance-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.grievance-table th, .grievance-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.grievance-table th {
+  background: #f3f4f6;
+} */
+
+
+
+.dashboard-page {
+  padding: 20px;
+}
+
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.stat-card {
+  padding: 20px;
+  border-radius: 10px;
+  background: #f3f4f6;
+  text-align: center;
+  font-size: 18px;
+}
+
+.stat-pending { background: #fff7ed; }
+.stat-progress { background: #e0f2fe; }
+.stat-resolved { background: #ecfdf5; }
+
+.action-bar {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background: #10b981;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.grievance-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.grievance-table th,
+.grievance-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.grievance-table th {
+  background: #f9fafb;
+}
+
+
+/* ---------- Admin Grievance Card ---------- */
+.grievance-card {
+  margin-bottom: 22px;          /* SPACE BETWEEN CARDS */
+  padding-bottom: 10px;
+}
+
+/* Button spacing */
+.status-btn {
+  margin-top: 12px;             /* SPACE ABOVE BUTTON */
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Light blue – Mark In Progress */
+.btn-progress {
+  background: #dbeafe;          /* light blue */
+  color: #1e40af;
+}
+
+/* Light green – Mark Resolved */
+.btn-resolve {
+  background: #dcfce7;          /* light green */
+  color: #166534;
+}
+
+/* Disabled / Done */
+.btn-done {
+  background: #e5e7eb;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+/* Prevent overflow */
+.dash-panel {
+  overflow-x: hidden;
+}
+/* 🔥 Opacity only for input fields inside auth page */
+/*.auth-form input,
+.auth-form select,
+.auth-form textarea {
+  background: rgba(255, 255, 255, 0.7); 
+  border: 1px solid rgba(203, 213, 225, 0.15);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.auth-form input:focus,
+.auth-form select:focus,
+.auth-form textarea:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: #2563eb;
+}*/
+.auth-form input,
+.auth-form textarea,
+.auth-form select {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  padding: 10px;
+  font-size: 13px;
+  margin-bottom: 10px;
+  outline: none;
+
+  /* 🔥 Opacity effect */
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  color: #111827;
 }
