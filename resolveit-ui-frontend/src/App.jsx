@@ -4,6 +4,7 @@ import Home from "./components/Home";
 import Auth from "./components/Auth";
 import PatientDashboard from "./components/PatientDashboard";
 import AdminDashboard from "./components/AdminDashboard";
+import AdminFeedback from "./components/AdminFeedback";
 import SubmitGrievance from "./components/SubmitGrievance";
 import Feedback from "./components/Feedback";
 
@@ -16,24 +17,9 @@ function App() {
     if (stored) {
       const u = JSON.parse(stored);
       setUser(u);
-      navigateAfterLogin(u);
+      setPage(u.role === "PATIENT" ? "patient" : "admin");
     }
   }, []);
-
-  const navigateAfterLogin = (u) => {
-    if (!u) return setPage("home");
-    if (u.role === "PATIENT") setPage("patient");
-    else setPage("admin");
-  };
-
-  const handleLoginSuccess = () => {
-    const stored = localStorage.getItem("userData");
-    if (stored) {
-      const u = JSON.parse(stored);
-      setUser(u);
-      navigateAfterLogin(u);
-    }
-  };
 
   const handleLogout = () => {
     localStorage.removeItem("userData");
@@ -43,17 +29,59 @@ function App() {
 
   return (
     <>
-      {page === "home" && <Home onClickSignIn={() => setPage("auth")} onGetStarted={() => setPage("auth")} />}
+      {page === "home" && <Home onClickSignIn={() => setPage("auth")} onGetStarted={() => setPage("auth")}/>}
 
-      {page === "auth" && <Auth onBackHome={() => setPage("home")} onLoginSuccess={handleLoginSuccess} />}
+      {page === "auth" && (
+        <Auth
+          onBackHome={() => setPage("home")}
+          onLoginSuccess={() => {
+            const u = JSON.parse(localStorage.getItem("userData"));
+            setUser(u);
+            setPage(u.role === "PATIENT" ? "patient" : "admin");
+          }}
+        />
+      )}
 
-      {page === "patient" && <PatientDashboard user={user} onLogout={handleLogout} onOpenSubmit={() => setPage("submit")} onOpenFeedback={() => setPage("feedback")} />}
+      {page === "admin" && (
+        <AdminDashboard
+          user={user}
+          onLogout={handleLogout}
+          onViewFeedback={() => setPage("admin-feedback")}
+        />
+      )}
 
-      {page === "admin" && <AdminDashboard user={user} onLogout={handleLogout} />}
+      {page === "admin-feedback" && (
+        <AdminFeedback
+          user={user}
+          onLogout={handleLogout}
+          onBack={() => setPage("admin")}
+        />
+      )}
 
-      {page === "submit" && <SubmitGrievance user={user} onBackDashboard={() => setPage("patient")} onLogout={handleLogout} />}
+      {page === "patient" && (
+        <PatientDashboard
+          user={user}
+          onLogout={handleLogout}
+          onOpenSubmit={() => setPage("submit")}
+          onOpenFeedback={() => setPage("feedback")}
+        />
+      )}
 
-      {page === "feedback" && <Feedback user={user} onBackDashboard={() => setPage("patient")} onLogout={handleLogout} />}
+      {page === "submit" && (
+        <SubmitGrievance
+          user={user}
+          onBackDashboard={() => setPage("patient")}
+          onLogout={handleLogout}
+        />
+      )}
+
+      {page === "feedback" && (
+        <Feedback
+          user={user}
+          onBackDashboard={() => setPage("patient")}
+          onLogout={handleLogout}
+        />
+      )}
     </>
   );
 }

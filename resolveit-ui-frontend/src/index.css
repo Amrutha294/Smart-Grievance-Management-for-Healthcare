@@ -187,7 +187,7 @@ body {
   background: transparent;
   font-size: 13px;
   cursor: pointer;
-  color: #1d4ed8;
+  color: #111111;
 }
 
 .auth-card {
@@ -704,7 +704,7 @@ body {
 .auth-form select {
   width: 100%;
   border-radius: 10px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #6d7d90;
   padding: 10px;
   font-size: 13px;
   margin-bottom: 10px;
@@ -717,3 +717,22 @@ body {
 
   color: #111827;
 }
+/* 🔥 Remove white background on focus */
+.auth-form input:focus,
+.auth-form select:focus,
+.auth-form textarea:focus {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #111827;
+  box-shadow: none;
+}
+
+/* 🔥 Chrome autofill fix */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px rgba(255, 255, 255, 0.15) inset !important;
+  -webkit-text-fill-color: #111827 !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+

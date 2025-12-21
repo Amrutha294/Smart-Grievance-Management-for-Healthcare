@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../index.css";
 
-export default function AdminDashboard({ user, onLogout }) {
+export default function AdminDashboard({ user, onLogout, onViewFeedback }) {
   // 🔐 Safety guard
   if (!user || !user.id) {
     return <h2 style={{ padding: 20 }}>Loading...</h2>;
@@ -17,9 +17,9 @@ export default function AdminDashboard({ user, onLogout }) {
 
   const API = "http://localhost:9090/api/grievances";
 
+  /* ---------- LOAD GRIEVANCES ---------- */
   const load = async () => {
     try {
-      // 🔹 Fetch all grievances (ADMIN)
       const res = await fetch(`${API}/all`);
       const data = await res.json();
 
@@ -30,14 +30,12 @@ export default function AdminDashboard({ user, onLogout }) {
 
       setGrievances(data);
 
-      // 🔹 Calculate stats from ALL grievances
       setStats({
         total: data.length,
         pending: data.filter(g => g.status === "PENDING").length,
         progress: data.filter(g => g.status === "IN_PROGRESS").length,
         resolved: data.filter(g => g.status === "RESOLVED").length
       });
-
     } catch (err) {
       console.error("Admin dashboard load error:", err);
       setGrievances([]);
@@ -48,6 +46,7 @@ export default function AdminDashboard({ user, onLogout }) {
     load();
   }, []);
 
+  /* ---------- UPDATE STATUS ---------- */
   const updateStatus = async (g) => {
     let next =
       g.status === "PENDING"
@@ -79,9 +78,17 @@ export default function AdminDashboard({ user, onLogout }) {
             <div className="logo-subtitle">Staff Panel</div>
           </div>
         </div>
-        <button className="nav-signin-btn" onClick={onLogout}>
-          Logout
-        </button>
+
+        <div style={{ display: "flex", gap: "12px" }}>
+          {/* ✅ ONLY NAVIGATION BUTTON */}
+          <button className="btn-secondary" onClick={onViewFeedback}>
+            View Feedback
+          </button>
+
+          <button className="nav-signin-btn" onClick={onLogout}>
+            Logout
+          </button>
+        </div>
       </header>
 
       <main className="dash-main">
@@ -107,7 +114,7 @@ export default function AdminDashboard({ user, onLogout }) {
           </div>
         </div>
 
-        {/* GRIEVANCE LIST */}
+        {/* GRIEVANCE LIST — UNCHANGED */}
         <div className="dash-panel">
           {grievances.length === 0 ? (
             <p className="empty-text">No grievances found.</p>

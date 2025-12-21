@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/feedback")
 @CrossOrigin(origins = "http://localhost:5173")
@@ -39,5 +38,11 @@ public class FeedbackController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Feedback>> getByUser(@PathVariable Long userId) {
         return ResponseEntity.ok(feedbackRepository.findByUserId(userId));
+    }
+
+    // ✅ ADD THIS
+    @GetMapping("/all")
+    public ResponseEntity<List<Feedback>> getAllFeedback() {
+        return ResponseEntity.ok(feedbackRepository.findAll());
     }
 }
