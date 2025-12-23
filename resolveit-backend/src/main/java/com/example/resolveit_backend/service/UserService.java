@@ -17,17 +17,31 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private EmailService emailService;
+
+
     // ---------- SIGNUP ----------
     public User register(User user) {
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("Email already exists");
-        }
-
-        user.setRole(user.getRole().toUpperCase());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        return userRepository.save(user); // ✅ saves to DB
+    if (userRepository.existsByEmail(user.getEmail())) {
+        throw new RuntimeException("Email already exists");
     }
+
+    user.setRole(user.getRole().toUpperCase());
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+    User savedUser = userRepository.save(user);
+
+    // ✅ SEND EMAIL AFTER SUCCESSFUL SIGNUP
+    emailService.sendSignupEmail(
+            savedUser.getEmail(),
+            savedUser.getFullName(),
+            savedUser.getRole()
+    );
+
+    return savedUser;
+}
+
 
     // ---------- LOGIN ----------
     public Optional<User> authenticate(String email, String rawPassword) {
