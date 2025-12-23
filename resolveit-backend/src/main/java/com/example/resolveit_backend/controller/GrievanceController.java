@@ -52,30 +52,34 @@ public class GrievanceController {
             g.setFileName(file.getOriginalFilename());
         }
 
-        // ✅ SAVE GRIEVANCE FIRST (IMPORTANT)
         Grievance saved = grievanceRepository.save(g);
 
-        // ✅ SEND EMAILS (SAFE – WILL NOT BREAK API)
         try {
-            // Email to user
+            // ✅ USER EMAIL
             emailService.sendGrievanceSubmittedEmail(
                     user.getEmail(),
                     saved.getTitle(),
                     user.getRole()
             );
 
-            // Email to admin (USE REAL EMAIL HERE)
-            emailService.sendAdminGrievanceNotification(
-                    "your_real_email@gmail.com",
-                    saved.getTitle(),
-                    user.getRole()
-            );
+            // ✅ ADMIN EMAILS FROM DB
+            List<User> admins = userRepository.findByRole("ADMIN");
+
+            for (User admin : admins) {
+                emailService.sendAdminGrievanceNotification(
+                        admin.getEmail(),
+                        saved.getTitle(),
+                        admin.getRole()
+                );
+            }
+
         } catch (Exception e) {
-            System.out.println("Email failed but grievance saved: " + e.getMessage());
+            System.out.println("Email error (admin/user): " + e.getMessage());
         }
 
         return ResponseEntity.ok(saved);
     }
+
 
     // ================= GET USER GRIEVANCES =================
     @GetMapping("/user/{userId}")
@@ -95,6 +99,7 @@ public class GrievanceController {
             @PathVariable Long id,
             @RequestParam String status
     ) {
+
         Grievance g = grievanceRepository.findById(id).orElse(null);
         if (g == null) {
             return ResponseEntity.badRequest().body("Grievance not found");
@@ -105,7 +110,7 @@ public class GrievanceController {
 
         Grievance saved = grievanceRepository.save(g);
 
-        // ✅ EMAIL WHEN RESOLVED (SAFE)
+        // ✅ EMAIL WHEN RESOLVED
         if ("RESOLVED".equals(status)) {
             try {
                 emailService.sendGrievanceResolvedEmail(
@@ -114,7 +119,7 @@ public class GrievanceController {
                         g.getUser().getRole()
                 );
             } catch (Exception e) {
-                System.out.println("Resolve email failed: " + e.getMessage());
+                System.out.println("⚠ Resolve email failed: " + e.getMessage());
             }
         }
 
