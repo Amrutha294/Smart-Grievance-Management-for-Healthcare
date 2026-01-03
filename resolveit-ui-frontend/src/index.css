@@ -41,12 +41,18 @@ body {
 }
 
 .nav-signin-btn {
-  border-radius: 999px;
-  padding: 8px 18px;
+  border-radius: 20px;
+  padding: 0px 20px;
   border: 1px solid #cbd5f5;
   background: white;
   color: #111827;
   cursor: pointer;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 }
 
 .btn-primary {
@@ -232,7 +238,7 @@ body {
 
 .auth-subtitle {
   font-size: 12px;
-  color: #6b7280;
+  color: #0c0c0c;
   margin-bottom: 16px;
 }
 
@@ -313,6 +319,8 @@ body {
   background: white;
   box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
 }
+
+
 
 .dash-right {
   display: flex;
@@ -623,10 +631,11 @@ body {
 .btn-secondary {
   background: #10b981;
   color: white;
-  padding: 10px 20px;
+  padding: 5px 20px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  height: 40px;
 }
 
 .grievance-table {
@@ -684,6 +693,7 @@ body {
 .dash-panel {
   overflow-x: hidden;
 }
+
 /* 🔥 Opacity only for input fields inside auth page */
 /*.auth-form input,
 .auth-form select,
@@ -699,6 +709,7 @@ body {
   background: rgba(255, 255, 255, 0.15);
   border-color: #2563eb;
 }*/
+
 .auth-form input,
 .auth-form textarea,
 .auth-form select {
@@ -735,4 +746,305 @@ select:-webkit-autofill {
   -webkit-text-fill-color: #111827 !important;
   transition: background-color 9999s ease-in-out 0s;
 }
+/*
+/* ===== LIGHT MODE ===== */
+:root {
+  --bg: #ffffff;
+  --text: #1f2937;
+  --card: #f9fafb;
+  --primary: #4f46e5;
+}
 
+/* ===== DARK MODE ===== */
+[data-theme="dark"] {
+  --bg: #12121260;
+  --text: #f5f5f5;
+  --card: #00000044;
+  --primary: #6366f1;
+}
+
+/* GLOBAL APPLY */
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+.dashboard-page,
+.auth-page {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.stat-card,
+.auth-card,
+.dash-panel {
+  background: var(--card);
+}
+
+/* Toggle Button */
+.theme-btn {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+/* ===== THEME COLORS ===== */
+:root {
+  --bg: #ffffff;
+  --text: #1f2937;
+  --header-bg: #ffffff;
+  --card-bg: #f9fafb;
+}
+
+[data-theme="dark"] {
+  --bg: #0f172a;
+  --text: #f8fafc;
+  --header-bg: #02061773;
+  --card-bg: #20203b63;
+}
+
+/* ===== GLOBAL ===== */
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+/* ===== HEADER ===== */
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background-color: var(--header-bg);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Theme button */
+.theme-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: var(--text);
+}
+
+/* FORCE FULL HEADER COLOR */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--card-bg);
+}
+
+/* FIX HEADER */
+thead,
+thead tr,
+thead th {
+  background-color: var(--header-bg) !important;
+  color: var(--text) !important;
+}
+
+/* CELL STYLING */
+th, td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid rgba(18, 18, 18, 0.15);
+}
+
+/* BODY ROWS */
+tbody tr {
+  background-color: var(--card-bg);
+}
+
+tbody tr:hover {
+  background-color: rgba(121, 121, 121, 0.221);
+}
+
+.app-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-card {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 10px;
+}
+
+
+
+
+/* Background image already applied */
+.auth-page {
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Card with transparency */
+.auth-card {
+  background: rgba(236, 233, 233, 0.27); /* light glass effect */
+  backdrop-filter: blur(6px);
+  padding: 30px;
+  border-radius: 12px;
+  width: 380px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Dark mode support */
+[data-theme="dark"] .auth-card {
+  background: rgba(20, 20, 20, 0.85);
+  color: white;
+}
+
+.profile-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  height: 40px;          /* same as others */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #4182ddca; /* Indigo */
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.8s;
+}
+
+.profile-circle:hover {
+  background-color: #387cca94;
+}
+
+/* ================= PROFILE PAGE ONLY ================= */
+
+.profile-page {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Main card */
+.profile-page .profile-card {
+  width: 380px;
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* Avatar */
+.profile-page .profile-avatar {
+  width: 90px;
+  height: 90px;
+  background: #4e46e582;
+  color: #fff;
+  font-size: 32px;
+  font-weight: bold;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Name + Role */
+.profile-page .profile-header {
+  text-align: center;
+}
+
+.profile-page .profile-role {
+  color: #888;
+  margin-bottom: 15px;
+}
+
+/* Inputs */
+.profile-page input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Buttons */
+.profile-page .profile-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.profile-page .profile-btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.profile-page .profile-btn.primary {
+  background: #7346e5ac;
+  color: white;
+}
+
+.profile-page .profile-btn.danger {
+  background: #e33232d8;
+  color: white;
+}
+  .profile-page .profile-btn{
+    background: rgba(0, 162, 255, 0.448);
+    color: white;
+    
+}
+/* ===== PROFILE PAGE INPUT TEXT FIX ===== */
+[data-theme="dark"] .profile-page input {
+  background: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;                 /* 🔥 visible text */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+/* ===== PATIENT HEADER ACTIONS FIX ===== */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;          /* 🔥 prevents stacking */
+}

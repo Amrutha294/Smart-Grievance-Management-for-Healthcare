@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "../index.css";
+import { useContext } from "react";
+import { ThemeContext } from "../components/ThemeContext";
 
 export default function PatientDashboard({
   user,
   onLogout,
   onOpenSubmit,
-  onOpenFeedback
+  onOpenFeedback,
+  onOpenProfile
 }) {
 
   // ✅ HARD GUARD – prevents white screen
@@ -69,14 +72,37 @@ export default function PatientDashboard({
   useEffect(() => {
     loadData();
   }, [user.id]);
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
     <div className="dashboard-page">
       {/* HEADER */}
       <header className="dash-header">
-        <h2>ResolveIT – Patient Dashboard</h2>
-        <button className="nav-signin-btn" onClick={onLogout}>Logout</button>
-      </header>
+  {/* LEFT SIDE */}
+  <h2>ResolveIT – Patient Dashboard</h2>
+
+  {/* RIGHT SIDE */}
+  <div className="header-actions">
+    <button
+      className="theme-btn"
+      onClick={toggleTheme}
+      title="Toggle Theme"
+    >
+      {theme === "light" ? "☀" : "☾"}
+    </button>
+
+    <button className="profile-btn" onClick={onOpenProfile}>
+  <span className="profile-circle">
+    {user?.fullName?.charAt(0).toUpperCase()}
+  </span>
+</button>
+
+    <button className="nav-signin-btn" onClick={onLogout}>
+      Logout
+    </button>
+  </div>
+</header>
+
 
       {/* STATS */}
       <div className="stat-grid">

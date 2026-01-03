@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "../index.css";
+import bgImage from "../assets/hospital.jpg";
+
 
 export default function Auth({ onBackHome, onLoginSuccess }) {
   const [tab, setTab] = useState("signin");
@@ -78,10 +80,16 @@ export default function Auth({ onBackHome, onLoginSuccess }) {
   };
 
   return (
-    <div className="auth-page">
-      <button className="back-home" onClick={onBackHome}>
-        ← Back
-      </button>
+    <div
+  className="auth-page"
+  style={{
+    backgroundImage: `url(${bgImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    minHeight: "100vh"
+  }}
+>
+
 
       <div className="auth-card">
         <div className="auth-logo-container">

@@ -2,14 +2,21 @@ import React, { useState } from "react";
 import "../index.css";
 
 export default function SubmitGrievance({ user, onBackDashboard, onLogout }) {
+
   const [message, setMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const API = "http://localhost:9090/api/grievances";
   const currentUser = user || JSON.parse(localStorage.getItem("userData"));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage("");
+
+    // ✅ Immediate feedback
+    setSubmitting(true);
+    setMessage("Submitting grievance...");
+    setIsSuccess(false);
 
     const formData = new FormData();
     formData.append("title", e.target.title.value);
@@ -24,22 +31,26 @@ export default function SubmitGrievance({ user, onBackDashboard, onLogout }) {
     try {
       const res = await fetch(API, {
         method: "POST",
-        body: formData, // ❗ DO NOT set Content-Type
+        body: formData,
       });
 
       if (!res.ok) {
         setMessage("Submission failed!");
+        setSubmitting(false);
         return;
       }
 
       const data = await res.json();
       sessionStorage.setItem("latestGrievance", data.id);
+
       setMessage("Grievance submitted successfully!");
+      setIsSuccess(true);
+      setSubmitting(false);
       e.target.reset();
 
-      setTimeout(() => onBackDashboard(), 500);
     } catch (err) {
       setMessage("Server error!");
+      setSubmitting(false);
     }
   };
 
@@ -64,10 +75,15 @@ export default function SubmitGrievance({ user, onBackDashboard, onLogout }) {
           Fill out the form below to submit your grievance
         </p>
 
+        {/* BACK BUTTON */}
         <button
           className="nav-signin-btn"
           style={{ marginBottom: "16px" }}
-          onClick={onBackDashboard}
+          onClick={() => {
+            setMessage("");
+            setIsSuccess(false);
+            onBackDashboard();
+          }}
         >
           ← Back
         </button>
@@ -86,15 +102,19 @@ export default function SubmitGrievance({ user, onBackDashboard, onLogout }) {
             <label>Attachment (Optional)</label>
             <input type="file" name="file" />
 
-            <button className="btn-primary submit-btn">
-              Submit Grievance
+            <button
+              className="btn-primary submit-btn"
+              disabled={submitting}
+            >
+              {submitting ? "Submitting..." : "Submit Grievance"}
             </button>
           </form>
 
+          {/* MESSAGE */}
           {message && (
             <p
               style={{
-                color: message.includes("successfully") ? "green" : "red",
+                color: isSuccess ? "green" : submitting ? "#555" : "red",
                 marginTop: "10px",
                 textAlign: "center",
               }}

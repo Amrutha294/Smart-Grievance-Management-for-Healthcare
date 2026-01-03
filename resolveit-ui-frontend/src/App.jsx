@@ -7,6 +7,8 @@ import AdminDashboard from "./components/AdminDashboard";
 import AdminFeedback from "./components/AdminFeedback";
 import SubmitGrievance from "./components/SubmitGrievance";
 import Feedback from "./components/Feedback";
+import { ThemeProvider } from "./components/ThemeContext";
+import Profile from "./components/Profile";
 
 function App() {
   const [page, setPage] = useState("home");
@@ -28,8 +30,13 @@ function App() {
   };
 
   return (
-    <>
-      {page === "home" && <Home onClickSignIn={() => setPage("auth")} onGetStarted={() => setPage("auth")}/>}
+    <ThemeProvider>
+      {page === "home" && (
+        <Home
+          onClickSignIn={() => setPage("auth")}
+          onGetStarted={() => setPage("auth")}
+        />
+      )}
 
       {page === "auth" && (
         <Auth
@@ -47,6 +54,7 @@ function App() {
           user={user}
           onLogout={handleLogout}
           onViewFeedback={() => setPage("admin-feedback")}
+          onOpenProfile={() => setPage("profile")} 
         />
       )}
 
@@ -64,6 +72,7 @@ function App() {
           onLogout={handleLogout}
           onOpenSubmit={() => setPage("submit")}
           onOpenFeedback={() => setPage("feedback")}
+          onOpenProfile={() => setPage("profile")}
         />
       )}
 
@@ -82,7 +91,17 @@ function App() {
           onLogout={handleLogout}
         />
       )}
-    </>
+      {page === "profile" && (
+        <Profile
+          user={user}
+          onBack={() =>
+            setPage(user.role === "ADMIN" ? "admin" : "patient")
+          }
+          onLogout={handleLogout}
+        />
+      )}
+
+    </ThemeProvider>
   );
 }
 

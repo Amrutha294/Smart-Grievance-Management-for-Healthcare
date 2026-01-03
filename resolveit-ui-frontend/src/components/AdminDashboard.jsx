@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "../index.css";
+import { useContext } from "react";
+import { ThemeContext } from "../components/ThemeContext";
 
-export default function AdminDashboard({ user, onLogout, onViewFeedback }) {
+export default function AdminDashboard({ user, onLogout, onViewFeedback, onOpenProfile }) {
   // 🔐 Safety guard
   if (!user || !user.id) {
     return <h2 style={{ padding: 20 }}>Loading...</h2>;
@@ -66,6 +68,7 @@ export default function AdminDashboard({ user, onLogout, onViewFeedback }) {
 
   const getStep = (s) =>
     s === "PENDING" ? 1 : s === "IN_PROGRESS" ? 2 : 3;
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
   return (
     <div className="dashboard-page">
@@ -84,10 +87,25 @@ export default function AdminDashboard({ user, onLogout, onViewFeedback }) {
           <button className="btn-secondary" onClick={onViewFeedback}>
             View Feedback
           </button>
+          <button
+              onClick={toggleTheme}
+              className="theme-btn"
+              title="Toggle Theme"
+            >
+              {theme === "light" ? "☀": "☾" }
+            </button>
 
+            <button className="profile-btn" onClick={onOpenProfile}>
+            <span className="profile-circle">
+              {user?.fullName?.charAt(0).toUpperCase()}
+            </span>
+          </button>
+
+ 
           <button className="nav-signin-btn" onClick={onLogout}>
             Logout
           </button>
+
         </div>
       </header>
 
