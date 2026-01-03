@@ -694,22 +694,6 @@ body {
   overflow-x: hidden;
 }
 
-/* 🔥 Opacity only for input fields inside auth page */
-/*.auth-form input,
-.auth-form select,
-.auth-form textarea {
-  background: rgba(255, 255, 255, 0.7); 
-  border: 1px solid rgba(203, 213, 225, 0.15);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-}
-.auth-form input:focus,
-.auth-form select:focus,
-.auth-form textarea:focus {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: #2563eb;
-}*/
-
 .auth-form input,
 .auth-form textarea,
 .auth-form select {
@@ -1048,3 +1032,35 @@ tbody tr:hover {
   gap: 12px;
   flex-wrap: nowrap;          /* 🔥 prevents stacking */
 }
+
+/* Sign in / Sign up switch text */
+.auth-switch-text {
+  margin-top: 14px;
+  font-size: 13px;
+  text-align: center;
+  color: #171717;
+}
+
+.auth-switch-text span {
+  color: #0655ff;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.auth-switch-text span:hover {
+  text-decoration: underline;
+}
+
+/* Forgot password placeholder */
+.forgot-link {
+  font-size: 13px;
+  text-align: right;
+  margin-bottom: 10px;
+  color: #1e1e1f;
+  cursor: pointer;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
+

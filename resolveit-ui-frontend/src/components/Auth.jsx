@@ -2,10 +2,16 @@ import React, { useState } from "react";
 import "../index.css";
 import bgImage from "../assets/hospital.jpg";
 
+export default function Auth({ onLoginSuccess }) {
+  const [tab, setTab] = useState("signin"); 
+  // signin | signup | forgot | reset
 
-export default function Auth({ onBackHome, onLoginSuccess }) {
-  const [tab, setTab] = useState("signin");
   const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
 
   const API_BASE = "http://localhost:9090/api/auth";
 
@@ -16,14 +22,14 @@ export default function Auth({ onBackHome, onLoginSuccess }) {
 
     const loginData = {
       email: e.target.login_email.value,
-      password: e.target.login_password.value,
+      password: e.target.login_password.value
     };
 
     try {
       const res = await fetch(`${API_BASE}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(loginData),
+        body: JSON.stringify(loginData)
       });
 
       if (!res.ok) {
@@ -35,11 +41,11 @@ export default function Auth({ onBackHome, onLoginSuccess }) {
       localStorage.setItem("userData", JSON.stringify(data));
       onLoginSuccess();
     } catch {
-      setErrorMsg("Server error. Please try again later.");
+      setErrorMsg("Server error. Try again later.");
     }
   };
 
-  /* ---------- SIGNUP ---------- */
+  /* ---------- SIGN UP ---------- */
   const handleSignup = async (e) => {
     e.preventDefault();
     setErrorMsg("");
@@ -49,19 +55,18 @@ export default function Auth({ onBackHome, onLoginSuccess }) {
       email: e.target.signup_email.value,
       phone: e.target.signup_phone.value,
       role: e.target.signup_role.value.toUpperCase(),
-      password: e.target.signup_password.value,
+      password: e.target.signup_password.value
     };
 
     try {
       const res = await fetch(`${API_BASE}/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData)
       });
 
       if (!res.ok) {
-        const msg = await res.text();
-        setErrorMsg(msg || "Signup Failed! Try another Email.");
+        setErrorMsg("Signup failed. Email may already exist.");
         return;
       }
 
@@ -69,132 +74,190 @@ export default function Auth({ onBackHome, onLoginSuccess }) {
       localStorage.setItem("userData", JSON.stringify(data));
       onLoginSuccess();
     } catch {
-      setErrorMsg("Server error. Please try again later.");
+      setErrorMsg("Server error. Try again later.");
+    }
+  };
+
+  /* ---------- SEND OTP ---------- */
+  const sendOtp = async (e) => {
+    e.preventDefault();
+    setErrorMsg("");
+    setSuccessMsg("");
+
+    try {
+      const res = await fetch(`${API_BASE}/send-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+
+      if (!res.ok) {
+        setErrorMsg("Email not registered");
+        return;
+      }
+
+      setSuccessMsg("OTP sent to your email");
+      setTab("reset");
+    } catch {
+      setErrorMsg("Server error. Try again later.");
+    }
+  };
+
+  /* ---------- RESET PASSWORD ---------- */
+  const resetPassword = async (e) => {
+    e.preventDefault();
+    setErrorMsg("");
+    setSuccessMsg("");
+
+    try {
+      const res = await fetch(`${API_BASE}/reset-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, otp, newPassword })
+      });
+
+      if (!res.ok) {
+        setErrorMsg("Invalid OTP or expired");
+        return;
+      }
+
+      setSuccessMsg("Password updated successfully");
+      setTab("signin");
+      setEmail("");
+      setOtp("");
+      setNewPassword("");
+    } catch {
+      setErrorMsg("Server error. Try again later.");
     }
   };
 
   /* ---------- TAB SWITCH ---------- */
   const switchTab = (newTab) => {
     setTab(newTab);
-    setErrorMsg(""); // 🔥 clear error on switch
+    setErrorMsg("");
+    setSuccessMsg("");
   };
 
   return (
     <div
-  className="auth-page"
-  style={{
-    backgroundImage: `url(${bgImage})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    minHeight: "100vh"
-  }}
->
-
-
+      className="auth-page"
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh"
+      }}
+    >
       <div className="auth-card">
-        <div className="auth-logo-container">
-          <img src="/src/assets/logo.svg" className="app-logo" alt="ResolveIT" />
-        </div>
-
         <h1 className="auth-title">ResolveIT</h1>
         <p className="auth-subtitle">Hospital Grievance Management System</p>
 
-        <div className="auth-tabs">
-          <button
-            className={tab === "signin" ? "active" : ""}
-            onClick={() => switchTab("signin")}
-          >
-            Sign In
-          </button>
-          <button
-            className={tab === "signup" ? "active" : ""}
-            onClick={() => switchTab("signup")}
-          >
-            Sign Up
-          </button>
-        </div>
-
-        {errorMsg && (
-          <p style={{ color: "red", fontSize: "15px", textAlign: "center" }}>
-            {errorMsg}
-          </p>
+        {/* ERROR / SUCCESS */}
+        {errorMsg && <p style={{ color: "red", textAlign: "center" }}>{errorMsg}</p>}
+        {successMsg && (
+          <p style={{ color: "green", textAlign: "center" }}>{successMsg}</p>
         )}
 
         {/* ---------- SIGN IN ---------- */}
-        {tab === "signin" ? (
-          <form
-            key="signin"
-            className="auth-form"
-            onSubmit={handleLogin}
-            autoComplete="off"
-          >
-            <label>Email</label>
-            <input
-              name="login_email"
-              type="email"
-              required
-              autoComplete="new-email"
-            />
+        {tab === "signin" && (
+          <>
+            <form className="auth-form" onSubmit={handleLogin}>
+              <label>Email</label>
+              <input name="login_email" type="email" required />
 
-            <label>Password</label>
-            <input
-              name="login_password"
-              type="password"
-              required
-              autoComplete="new-password"
-            />
+              <label>Password</label>
+              <input name="login_password" type="password" required />
 
-            <button className="btn-primary">Sign In</button>
-          </form>
-        ) : (
-          /* ---------- SIGN UP ---------- */
-          <form
-            key="signup"
-            className="auth-form"
-            onSubmit={handleSignup}
-            autoComplete="off"
-          >
-            <label>Full Name</label>
-            <input
-              name="signup_name"
-              type="text"
-              required
-              autoComplete="off"
-            />
+              <p className="forgot-link" onClick={() => switchTab("forgot")}>
+                Forgot password?
+              </p>
 
-            <label>Email</label>
-            <input
-              name="signup_email"
-              type="email"
-              required
-              autoComplete="off"
-            />
+              <button className="btn-primary">Sign In</button>
+            </form>
 
-            <label>Phone Number</label>
-            <input
-              name="signup_phone"
-              type="text"
-              required
-              autoComplete="off"
-            />
+            <p className="auth-switch-text">
+              Don’t have an account?{" "}
+              <span onClick={() => switchTab("signup")}>Sign up</span>
+            </p>
+          </>
+        )}
 
-            <label>Select Role</label>
-            <select name="signup_role" required>
-              <option value="PATIENT">Patient</option>
-              <option value="STAFF">Staff</option>
-              <option value="ADMIN">Admin</option>
-            </select>
+        {/* ---------- SIGN UP ---------- */}
+        {tab === "signup" && (
+          <>
+            <form className="auth-form" onSubmit={handleSignup}>
+              <label>Full Name</label>
+              <input name="signup_name" required />
 
-            <label>Password</label>
-            <input
-              name="signup_password"
-              type="password"
-              required
-              autoComplete="new-password"
-            />
+              <label>Email</label>
+              <input name="signup_email" type="email" required />
 
-            <button className="btn-primary">Create Account</button>
-          </form>
+              <label>Phone</label>
+              <input name="signup_phone" required />
+
+              <label>Role</label>
+              <select name="signup_role" required>
+                <option value="PATIENT">Patient</option>
+                <option value="STAFF">Staff</option>
+                <option value="ADMIN">Admin</option>
+              </select>
+
+              <label>Password</label>
+              <input name="signup_password" type="password" required />
+
+              <button className="btn-primary">Create Account</button>
+            </form>
+
+            <p className="auth-switch-text">
+              Already have an account?{" "}
+              <span onClick={() => switchTab("signin")}>Sign in</span>
+            </p>
+          </>
+        )}
+
+        {/* ---------- FORGOT PASSWORD ---------- */}
+        {tab === "forgot" && (
+          <>
+            <form className="auth-form" onSubmit={sendOtp}>
+              <label>Registered Email</label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+
+              <button className="btn-primary">Send OTP</button>
+            </form>
+
+            <p className="auth-switch-text">
+              Back to <span onClick={() => switchTab("signin")}>Sign in</span>
+            </p>
+          </>
+        )}
+
+        {/* ---------- RESET PASSWORD ---------- */}
+        {tab === "reset" && (
+          <>
+            <form className="auth-form" onSubmit={resetPassword}>
+              <label>OTP</label>
+              <input
+                required
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+              />
+
+              <label>New Password</label>
+              <input
+                type="password"
+                required
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+
+              <button className="btn-primary">Reset Password</button>
+            </form>
+          </>
         )}
       </div>
     </div>

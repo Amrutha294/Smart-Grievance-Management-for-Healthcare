@@ -97,5 +97,21 @@ public class EmailService {
         }
 
     }
+    // ================= FORGOT PASSWORD OTP =================
+    public void sendPasswordResetOtp(String toEmail, String otp) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
+        message.setSubject("ResolveIT - Password Reset OTP");
+
+        message.setText(
+            "Hello,\n\n" +
+            "Your OTP for password reset is: " + otp + "\n\n" +
+            "This OTP is valid for 5 minutes.\n\n" +
+            "Regards,\nResolveIT Team"
+        );
+
+        mailSender.send(message);
+    }
 
 }

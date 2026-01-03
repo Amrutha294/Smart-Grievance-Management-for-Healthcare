@@ -20,28 +20,26 @@ public class UserService {
     @Autowired
     private EmailService emailService;
 
-
     // ---------- SIGNUP ----------
     public User register(User user) {
-    if (userRepository.existsByEmail(user.getEmail())) {
-        throw new RuntimeException("Email already exists");
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
+
+        user.setRole(user.getRole().toUpperCase());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        User savedUser = userRepository.save(user);
+
+        // ✅ Signup email
+        emailService.sendSignupEmail(
+                savedUser.getEmail(),
+                savedUser.getFullName(),
+                savedUser.getRole()
+        );
+
+        return savedUser;
     }
-
-    user.setRole(user.getRole().toUpperCase());
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-    User savedUser = userRepository.save(user);
-
-    // ✅ SEND EMAIL AFTER SUCCESSFUL SIGNUP
-    emailService.sendSignupEmail(
-            savedUser.getEmail(),
-            savedUser.getFullName(),
-            savedUser.getRole()
-    );
-
-    return savedUser;
-}
-
 
     // ---------- LOGIN ----------
     public Optional<User> authenticate(String email, String rawPassword) {
@@ -53,15 +51,20 @@ public class UserService {
 
         User user = optionalUser.get();
 
-        // ✅ Correct password check
         if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
             return Optional.empty();
         }
 
-        // 🔒 Never expose password
-        user.setPassword(null);
-
-        // ✅ MUST return user
+        user.setPassword(null); // never expose password
         return Optional.of(user);
+    }
+
+    // ---------- FORGOT PASSWORD SUPPORT ----------
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public void save(User user) {
+        userRepository.save(user);
     }
 }
