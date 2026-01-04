@@ -9,6 +9,12 @@ public interface GrievanceRepository extends JpaRepository<Grievance, Long> {
 
     List<Grievance> findByUserId(Long userId);
 
+    // ✅ For Patient Dashboard (latest first)
+    List<Grievance> findByUserIdOrderByCreatedAtDesc(Long userId);
+
+    // ✅ For Admin Dashboard (latest first)
+    List<Grievance> findAllByOrderByCreatedAtDesc();
+
     Long countByUserId(Long userId);
 
     Long countByUserIdAndStatus(Long userId, String status);

@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "../index.css";
-import { useContext } from "react";
 import { ThemeContext } from "../components/ThemeContext";
 
 export default function PatientDashboard({
@@ -11,7 +10,6 @@ export default function PatientDashboard({
   onOpenProfile
 }) {
 
-  // ✅ HARD GUARD – prevents white screen
   if (!user || !user.id) {
     return <h2 style={{ padding: 20 }}>Loading user...</h2>;
   }
@@ -25,30 +23,20 @@ export default function PatientDashboard({
   });
 
   const API = "http://localhost:9090/api/grievances";
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
+  // ================= LOAD DATA =================
   const loadData = async () => {
     try {
-      // 🔹 Fetch grievances
       const res = await fetch(`${API}/user/${user.id}`);
-
-      if (!res.ok) {
-        console.error("Failed to load grievances");
-        setGrievances([]);
-        return;
-      }
-
       const data = await res.json();
-
-      // ✅ VERY IMPORTANT CHECK
       if (!Array.isArray(data)) {
-        console.error("Expected array, got:", data);
         setGrievances([]);
         return;
       }
 
       setGrievances(data);
 
-      // 🔹 Fetch counts
       const [p, pr, r] = await Promise.all([
         fetch(`${API}/count/pending/${user.id}`),
         fetch(`${API}/count/progress/${user.id}`),
@@ -64,64 +52,68 @@ export default function PatientDashboard({
 
     } catch (err) {
       console.error("Dashboard load error:", err);
-      setGrievances([]); // 🔴 prevents crash
+      setGrievances([]);
     }
   };
 
-  // ✅ Correct dependency
   useEffect(() => {
     loadData();
   }, [user.id]);
-  const { theme, toggleTheme } = useContext(ThemeContext);
+
+  // ================= DELETE GRIEVANCE =================
+  const deleteGrievance = async (g) => {
+    if (!window.confirm("Are you sure you want to delete this grievance?")) return;
+
+    try {
+      const res = await fetch(`${API}/${g.id}/user/${user.id}`, {
+        method: "DELETE"
+      });
+
+      const msg = await res.text();
+
+      if (!res.ok) {
+        alert(msg); // 👈 show backend message
+        return;
+      }
+
+      alert("Grievance deleted successfully");
+
+      loadData();
+    } catch (err) {
+      alert("Server error while deleting grievance");
+    }
+  };
 
   return (
     <div className="dashboard-page">
+
       {/* HEADER */}
       <header className="dash-header">
-  {/* LEFT SIDE */}
-  <h2>ResolveIT – Patient Dashboard</h2>
+        <h2>ResolveIT – Patient Dashboard</h2>
 
-  {/* RIGHT SIDE */}
-  <div className="header-actions">
-    <button
-      className="theme-btn"
-      onClick={toggleTheme}
-      title="Toggle Theme"
-    >
-      {theme === "light" ? "☀" : "☾"}
-    </button>
+        <div className="header-actions">
+          <button className="theme-btn" onClick={toggleTheme}>
+            {theme === "light" ? "☀" : "☾"}
+          </button>
 
-    <button className="profile-btn" onClick={onOpenProfile}>
-  <span className="profile-circle">
-    {user?.fullName?.charAt(0).toUpperCase()}
-  </span>
-</button>
+          <button className="profile-btn" onClick={onOpenProfile}>
+            <span className="profile-circle">
+              {user?.fullName?.charAt(0).toUpperCase()}
+            </span>
+          </button>
 
-    <button className="nav-signin-btn" onClick={onLogout}>
-      Logout
-    </button>
-  </div>
-</header>
-
+          <button className="nav-signin-btn" onClick={onLogout}>
+            Logout
+          </button>
+        </div>
+      </header>
 
       {/* STATS */}
       <div className="stat-grid">
-        <div className="stat-card">
-          <div>Total</div>
-          <b>{stats.total}</b>
-        </div>
-        <div className="stat-card stat-pending">
-          <div>Pending</div>
-          <b>{stats.pending}</b>
-        </div>
-        <div className="stat-card stat-progress">
-          <div>In Progress</div>
-          <b>{stats.progress}</b>
-        </div>
-        <div className="stat-card stat-resolved">
-          <div>Resolved</div>
-          <b>{stats.resolved}</b>
-        </div>
+        <div className="stat-card"><div>Total</div><b>{stats.total}</b></div>
+        <div className="stat-card stat-pending"><div>Pending</div><b>{stats.pending}</b></div>
+        <div className="stat-card stat-progress"><div>In Progress</div><b>{stats.progress}</b></div>
+        <div className="stat-card stat-resolved"><div>Resolved</div><b>{stats.resolved}</b></div>
       </div>
 
       {/* ACTION BUTTONS */}
@@ -147,6 +139,7 @@ export default function PatientDashboard({
                 <th>Department</th>
                 <th>Status</th>
                 <th>Created At</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -156,11 +149,18 @@ export default function PatientDashboard({
                   <td>{g.title}</td>
                   <td>{g.department}</td>
                   <td>{g.status}</td>
+                  <td>{g.createdAt}</td>
+
                   <td>
-                    {Array.isArray(g.createdAt)
-                      ? g.createdAt.join("-")
-                      : g.createdAt}
+                    <button
+                      className="btn-danger"
+                      disabled={g.status !== "PENDING"}  // ✅ FIX
+                      onClick={() => deleteGrievance(g)}
+                    >
+                      🗑 Delete
+                    </button>
                   </td>
+
                 </tr>
               ))}
             </tbody>
