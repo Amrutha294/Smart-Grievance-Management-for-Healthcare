@@ -2,7 +2,13 @@ import React, { useEffect, useState, useContext } from "react";
 import "../index.css";
 import { ThemeContext } from "../components/ThemeContext";
 
-export default function AdminDashboard({ user, onLogout, onViewFeedback, onOpenProfile }) {
+export default function AdminDashboard({
+  user,
+  onLogout,
+  onViewFeedback,
+  onOpenProfile,
+  onViewAnalytics   // ✅ ADD THIS
+}) {
 
   if (!user || !user.id) {
     return <h2 style={{ padding: 20 }}>Loading...</h2>;
@@ -17,20 +23,17 @@ export default function AdminDashboard({ user, onLogout, onViewFeedback, onOpenP
   });
 
   const API = "http://localhost:9090/api/grievances";
-  const FILE_BASE = "http://localhost:9090/uploads"; // 👈 IMPORTANT
+  const FILE_BASE = "http://localhost:9090/uploads";
 
   const { theme, toggleTheme } = useContext(ThemeContext);
 
-  /* ---------- LOAD GRIEVANCES ---------- */
+  /* ---------- LOAD DATA ---------- */
   const load = async () => {
     try {
       const res = await fetch(`${API}/all`);
       const data = await res.json();
 
-      if (!Array.isArray(data)) {
-        setGrievances([]);
-        return;
-      }
+      if (!Array.isArray(data)) return;
 
       setGrievances(data);
       setStats({
@@ -41,7 +44,6 @@ export default function AdminDashboard({ user, onLogout, onViewFeedback, onOpenP
       });
     } catch (err) {
       console.error("Admin dashboard load error:", err);
-      setGrievances([]);
     }
   };
 
@@ -49,9 +51,8 @@ export default function AdminDashboard({ user, onLogout, onViewFeedback, onOpenP
     load();
   }, []);
 
-  /* ---------- UPDATE STATUS ---------- */
   const updateStatus = async (g) => {
-    let next =
+    const next =
       g.status === "PENDING"
         ? "IN_PROGRESS"
         : g.status === "IN_PROGRESS"
@@ -76,14 +77,20 @@ export default function AdminDashboard({ user, onLogout, onViewFeedback, onOpenP
       {/* HEADER */}
       <header className="dash-header">
         <div className="logo-area">
-          <img src="/src/assets/logo.svg" className="app-logo" />
+          <img src="/src/assets/logo.svg" className="app-logo" alt="logo" />
           <div>
             <div className="logo-title">ResolveIT Admin</div>
             <div className="logo-subtitle">Staff Panel</div>
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: "12px" }}>
+        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+
+          {/* ✅ ANALYTICS BUTTON */}
+          <button className="btn-secondary" onClick={onViewAnalytics}>
+            📊 Overview
+          </button>
+
           <button className="btn-secondary" onClick={onViewFeedback}>
             View Feedback
           </button>
@@ -94,7 +101,7 @@ export default function AdminDashboard({ user, onLogout, onViewFeedback, onOpenP
 
           <button className="profile-btn" onClick={onOpenProfile}>
             <span className="profile-circle">
-              {user?.fullName?.charAt(0).toUpperCase()}
+              {user?.fullName?.charAt(0)?.toUpperCase()}
             </span>
           </button>
 
@@ -104,6 +111,7 @@ export default function AdminDashboard({ user, onLogout, onViewFeedback, onOpenP
         </div>
       </header>
 
+      {/* CONTENT */}
       <main className="dash-main">
         <h2>Hospital Grievances</h2>
 
@@ -141,10 +149,10 @@ export default function AdminDashboard({ user, onLogout, onViewFeedback, onOpenP
                 <br />
                 🕘 {g.createdAt}
 
-                {/* 📎 ATTACHMENT */}
                 {g.fileName && (
                   <div style={{ marginTop: "6px" }}>
-                    📎 <a
+                    📎{" "}
+                    <a
                       href={`${FILE_BASE}/${g.fileName}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -155,7 +163,6 @@ export default function AdminDashboard({ user, onLogout, onViewFeedback, onOpenP
                   </div>
                 )}
 
-                {/* STATUS TIMELINE */}
                 <div className="timeline">
                   <div className={`step ${getStep(g.status) >= 1 ? "active" : ""}`}>Submitted</div>
                   <div className="line" />
@@ -164,7 +171,6 @@ export default function AdminDashboard({ user, onLogout, onViewFeedback, onOpenP
                   <div className={`step ${getStep(g.status) >= 3 ? "active" : ""}`}>Resolved</div>
                 </div>
 
-                {/* ACTION BUTTON */}
                 <button
                   className={`status-btn ${
                     g.status === "PENDING"

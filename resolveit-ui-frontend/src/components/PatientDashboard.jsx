@@ -76,7 +76,7 @@ export default function PatientDashboard({
         return;
       }
 
-      alert("Grievance deleted successfully");
+      alert("Gri evance deleted successfully");
 
       loadData();
     } catch (err) {

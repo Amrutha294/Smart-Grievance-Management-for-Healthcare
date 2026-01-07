@@ -9,6 +9,8 @@ import SubmitGrievance from "./components/SubmitGrievance";
 import Feedback from "./components/Feedback";
 import { ThemeProvider } from "./components/ThemeContext";
 import Profile from "./components/Profile";
+import GrievanceAnalytics from "./components/GrievanceAnalytics";
+
 
 function App() {
   const [page, setPage] = useState("home");
@@ -37,6 +39,9 @@ function App() {
           onGetStarted={() => setPage("auth")}
         />
       )}
+      {page === "analytics" && (
+      <GrievanceAnalytics onBack={() => setPage("admin")} />
+    )}
 
       {page === "auth" && (
         <Auth
@@ -54,6 +59,7 @@ function App() {
           user={user}
           onLogout={handleLogout}
           onViewFeedback={() => setPage("admin-feedback")}
+          onViewAnalytics={() => setPage("analytics")}
           onOpenProfile={() => setPage("profile")} 
         />
       )}

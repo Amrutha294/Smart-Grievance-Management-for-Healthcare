@@ -1,0 +1,105 @@
+/* ===== Grievance Analytics Page ===== */
+
+.analytics-page {
+  padding: 30px;
+}
+
+/* Header */
+.analytics-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.analytics-header h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.analytics-header p {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* KPI Cards */
+.analytics-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.analytics-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 22px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease;
+}
+
+.analytics-card:hover {
+  transform: translateY(-4px);
+}
+
+.analytics-card span {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.analytics-card h3 {
+  font-size: 30px;
+  margin-top: 10px;
+}
+
+/* Status Colors */
+.analytics-card.pending h3 {
+  color: #facc15;
+}
+
+.analytics-card.progress h3 {
+  color: #38bdf8;
+}
+
+.analytics-card.resolved h3 {
+  color: #22c55e;
+}
+
+/* Chart Card */
+.analytics-chart-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 540px;
+  margin: 0 auto;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.analytics-chart-card h3 {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.chart-wrapper {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Back button */
+.analytics-back {
+  margin-bottom: 10px;
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  color: #4f46e5;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.back-btn:hover {
+  text-decoration: underline;
+}

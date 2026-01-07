@@ -1,16 +1,5 @@
 package com.example.resolveit_backend.controller;
 
-import com.example.resolveit_backend.entity.Grievance;
-import com.example.resolveit_backend.entity.User;
-import com.example.resolveit_backend.repository.GrievanceRepository;
-import com.example.resolveit_backend.repository.UserRepository;
-import com.example.resolveit_backend.service.EmailService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,6 +7,25 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.resolveit_backend.entity.Grievance;
+import com.example.resolveit_backend.entity.User;
+import com.example.resolveit_backend.repository.GrievanceRepository;
+import com.example.resolveit_backend.repository.UserRepository;
+import com.example.resolveit_backend.service.EmailService;
 
 @RestController
 @RequestMapping("/api/grievances")
@@ -99,13 +107,18 @@ public class GrievanceController {
     // ================= GET USER GRIEVANCES =================
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Grievance>> getByUser(@PathVariable Long userId) {
-        return ResponseEntity.ok(grievanceRepository.findByUserId(userId));
+        return ResponseEntity.ok(
+            grievanceRepository.findByUserIdOrderByCreatedAtDesc(userId)
+        );
     }
+
 
     // ================= ADMIN GET ALL =================
     @GetMapping("/all")
     public ResponseEntity<List<Grievance>> getAll() {
-        return ResponseEntity.ok(grievanceRepository.findAll());
+        return ResponseEntity.ok(
+            grievanceRepository.findAllByOrderByCreatedAtDesc()
+        );
     }
 
     // ================= UPDATE STATUS =================
