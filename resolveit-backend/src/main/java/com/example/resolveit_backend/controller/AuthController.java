@@ -1,5 +1,8 @@
 package com.example.resolveit_backend.controller;
-
+public class AuthController {
+    
+    // Your login and signup methods stay exactly the same...
+}
 import com.example.resolveit_backend.dto.ResetPasswordRequest;
 import com.example.resolveit_backend.entity.PasswordOtp;
 import com.example.resolveit_backend.entity.User;
@@ -19,7 +22,7 @@ import java.util.Random;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "https://smart-grievance-management-for.onrender.com")
 public class AuthController {
 
     @Autowired
