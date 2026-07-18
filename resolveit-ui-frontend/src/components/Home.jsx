@@ -10,7 +10,7 @@ export default function Home({ onClickSignIn, onGetStarted }) {
     <div className="home-page">
       {/* Top Navbar */}
       <header className="home-header">
-        <div className="logo-area">
+        <div className="logo-area" style={{ backgroundImage: `url(${logoSvg})` }}>
           <img
             src={logoSvg}
             className="app-logo"
