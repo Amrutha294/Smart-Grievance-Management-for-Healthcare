@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import "../index.css";
 import { ThemeContext } from "../components/ThemeContext";
-import logoIcon from "../assets/logo.png";
+import logo from "../assets/Logo.png";
 export default function AdminDashboard({
   user,
   onLogout,
