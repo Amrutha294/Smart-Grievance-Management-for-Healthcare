@@ -27,7 +27,7 @@ export default function Auth({ onLoginSuccess }) {
     };
 
     try {
-      const res = await fetch(`${API_BASE}/login`, {
+      const res = await fetch(`${API}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loginData)
@@ -60,7 +60,7 @@ export default function Auth({ onLoginSuccess }) {
     };
 
     try {
-      const res = await fetch(`${API_BASE}/signup`, {
+      const res = await fetch(`${API}/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData)
@@ -86,7 +86,7 @@ export default function Auth({ onLoginSuccess }) {
     setSuccessMsg("");
 
     try {
-      const res = await fetch(`${API_BASE}/send-otp`, {
+      const res = await fetch(`${API}/send-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email })
