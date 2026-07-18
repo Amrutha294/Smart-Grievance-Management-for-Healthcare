@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import "../index.css";
 import { ThemeContext } from "../components/ThemeContext";
-
+import logoIcon from "../assets/logo.png";
 export default function AdminDashboard({
   user,
   onLogout,
@@ -78,7 +78,7 @@ const FILE_BASE = `${BASE_URL}/uploads`;
       {/* HEADER */}
       <header className="dash-header">
         <div className="logo-area">
-          <img src="/src/assets/logo.svg" className="app-logo" alt="logo" />
+        
           <div>
             <div className="logo-title">ResolveIT Admin</div>
             <div className="logo-subtitle">Staff Panel</div>
