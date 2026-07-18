@@ -78,7 +78,7 @@ const FILE_BASE = `${BASE_URL}/uploads`;
       {/* HEADER */}
       <header className="dash-header">
         <div className="logo-area">
-        
+          <img src={logoIcon} alt="Logo" />
           <div>
             <div className="logo-title">ResolveIT Admin</div>
             <div className="logo-subtitle">Staff Panel</div>
