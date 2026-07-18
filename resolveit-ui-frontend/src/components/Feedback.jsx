@@ -3,8 +3,8 @@ import "../index.css";
 
 export default function Feedback({ user, onBackDashboard, onLogout }) {
   const [message, setMessage] = useState("");
-
-  const API_FEEDBACK = "http://localhost:9090/api/feedback";
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const API_FEEDBACK = `${BASE_URL}/api/feedback`;
   const currentUser = user || JSON.parse(localStorage.getItem("userData"));
 
   const handleSubmitFeedback = async (e) => {
