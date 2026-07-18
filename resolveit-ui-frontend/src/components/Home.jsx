@@ -4,6 +4,7 @@ import healthcareBg from "../assets/hospital.jpg";
 import logoSvg from "../assets/logo.svg";
 import timePng from "../assets/time.png";
 import correctPng from "../assets/correct.png";
+import securePng from "../assests/secure.png";
 export default function Home({ onClickSignIn, onGetStarted }) {
   return (
     <div className="home-page">
@@ -11,7 +12,7 @@ export default function Home({ onClickSignIn, onGetStarted }) {
       <header className="home-header">
         <div className="logo-area">
           <img
-            src="/src/assets/logo.svg"
+            src={logoSvg}
             className="app-logo"
             alt="ResolveIT Logo"
           />
@@ -29,7 +30,7 @@ export default function Home({ onClickSignIn, onGetStarted }) {
       {/* Hero */}
       <main className="home-hero">
         <img
-          src="/src/assets/logo.svg"
+          src={logoSvg}
           className="app-logo"
           alt="ResolveIT Logo"
         />
@@ -49,7 +50,7 @@ export default function Home({ onClickSignIn, onGetStarted }) {
         <div className="feature-grid">
           <div className="feature-card">
             <span className="feature-icon">
-              <img src={healthcareBg} alt="Healthcare" />
+              <img src={securePng} alt="Healthcare" />
             </span>
             <h3>Secure & Private</h3>
             <p>
@@ -60,7 +61,7 @@ export default function Home({ onClickSignIn, onGetStarted }) {
           <div className="feature-card">
             <span className="feature-icon">
               <img
-                src="/src/assets/time.png"
+                src={timePng}
                 className="app-logo"
                 alt="Tracking"
               />
@@ -71,7 +72,7 @@ export default function Home({ onClickSignIn, onGetStarted }) {
           <div className="feature-card">
             <span className="feature-icon">
               <img
-                src="/src/assets/correct.png"
+                src={correctPng}
                 className="app-logo"
                 alt="Quick"
               />
