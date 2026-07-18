@@ -22,8 +22,9 @@ export default function AdminDashboard({
     resolved: 0
   });
 
-  const API = "http://localhost:9090/api/grievances";
-  const FILE_BASE = "http://localhost:9090/uploads";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API = `${BASE_URL}/api/grievances`;
+const FILE_BASE = `${BASE_URL}/uploads`;
 
   const { theme, toggleTheme } = useContext(ThemeContext);
 
