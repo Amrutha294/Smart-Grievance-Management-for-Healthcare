@@ -1,8 +1,4 @@
 package com.example.resolveit_backend.controller;
-public class AuthController {
-    
-    // Your login and signup methods stay exactly the same...
-}
 import com.example.resolveit_backend.dto.ResetPasswordRequest;
 import com.example.resolveit_backend.entity.PasswordOtp;
 import com.example.resolveit_backend.entity.User;
