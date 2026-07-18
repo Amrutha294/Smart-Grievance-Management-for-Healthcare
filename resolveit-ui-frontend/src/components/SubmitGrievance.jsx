@@ -7,7 +7,8 @@ export default function SubmitGrievance({ user, onBackDashboard, onLogout }) {
   const [isSuccess, setIsSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const API = "http://localhost:9090/api/grievances";
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const API = `${BASE_URL}/api/grievances`;
   const currentUser = user || JSON.parse(localStorage.getItem("userData"));
 
   const handleSubmit = async (e) => {
