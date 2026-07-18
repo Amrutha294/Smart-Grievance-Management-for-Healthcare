@@ -3,7 +3,8 @@ import "../index.css";
 
 export default function AdminFeedback({ onBack }) {
   const [feedbacks, setFeedbacks] = useState([]);
-  const API = "http://localhost:9090/api/feedback";
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const API = `${BASE_URL}/api/feedback`;
 
   const loadFeedbacks = async () => {
     try {
