@@ -1,6 +1,6 @@
 import React from "react";
 import "../index.css";
-
+import healthcareBg from "../assets/healthcare-bg.png";
 export default function Home({ onClickSignIn, onGetStarted }) {
   return (
     <div className="home-page">
@@ -46,11 +46,7 @@ export default function Home({ onClickSignIn, onGetStarted }) {
         <div className="feature-grid">
           <div className="feature-card">
             <span className="feature-icon">
-              <img
-                src="/src/assets/secure.png"
-                className="app-logo"
-                alt="Secure"
-              />
+              <img src={healthcareBg} alt="Healthcare" />
             </span>
             <h3>Secure & Private</h3>
             <p>
