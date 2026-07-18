@@ -1,6 +1,6 @@
 import React from "react";
 import "../index.css";
-import healthcareBg from "../assets/healthcare-bg.png";
+import healthcareBg from "../assets/healthcare.jpg";
 export default function Home({ onClickSignIn, onGetStarted }) {
   return (
     <div className="home-page">
