@@ -4,7 +4,7 @@ import healthcareBg from "../assets/hospital.jpg";
 import logoSvg from "../assets/logo.svg";
 import timePng from "../assets/time.png";
 import correctPng from "../assets/correct.png";
-import securePng from "../assests/secure.png";
+import securePng from "../assets/secure.png";
 export default function Home({ onClickSignIn, onGetStarted }) {
   return (
     <div className="home-page">
