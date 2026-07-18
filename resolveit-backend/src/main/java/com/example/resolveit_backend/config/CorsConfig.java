@@ -1,4 +1,4 @@
-package com.example.resolveit_backend.config;
+/*package com.example.resolveit_backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,3 +24,4 @@ public class CorsConfig {
         return src;
     }
 }
+*/
