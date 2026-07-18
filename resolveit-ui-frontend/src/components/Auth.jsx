@@ -13,7 +13,8 @@ export default function Auth({ onLoginSuccess }) {
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
-  const API_BASE = "http://localhost:9090/api/auth";
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const API = `${BASE_URL}/api/auth`;
 
   /* ---------- LOGIN ---------- */
   const handleLogin = async (e) => {
